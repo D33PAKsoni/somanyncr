@@ -15,7 +15,7 @@ const Header = () => {
             </div>
           </div>
         </div>
-
+        <div className="contact-details">Contact details</div>
         <Navbar></Navbar>
       </div>
     </>
