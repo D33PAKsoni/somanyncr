@@ -4,16 +4,6 @@
   --item-width: calc(var(--menu-width) / var(--items));
 }
 
-/* body {
-  margin: 0;
-  padding: 0;
-  background: linear-gradient(45deg, #102eff, #d2379b);
-  font-family: "Roboto", sans-serif;
-  height: 100vh;
-  overflow: hidden;
-  width: 100vw;
-} */
-
 nav {
   width: var(--menu-width);
   display: flex;
@@ -42,6 +32,7 @@ nav .menu-item {
 
 nav .menu-text,
 nav .menu-text a {
+  color: white;
   font-size: 1em;
   text-decoration: none;
   text-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
@@ -67,7 +58,7 @@ nav .menu-text a:hover {
   box-sizing: border-box;
   top: 3rem;
   border-radius: 10px;
-  background: white;
+  /* background: white; */
   display: block;
   height: 300px;
   width: calc(var(--menu-width) * 1.5);
@@ -143,18 +134,18 @@ nav .menu-item:nth-of-type(4):hover ~ #sub-menu-container #sub-menu-holder {
   display: grid;
   grid-template-columns: 54% 50%;
 }
-.menu-item .sub-menu.triple {
+/* .menu-item .sub-menu.triple {
   min-width: 41.25em;
   height: 25em;
   display: grid;
   padding: 1.5em 2.5em;
   grid-template-columns: 55% 45%;
-}
+} */
 .menu-item:hover .sub-menu {
   pointer-events: all;
   clip-path: inset(0 0 0 0);
 }
-
+/* 
 .menu-text:after {
   transition: bottom 0.25s ease-out, opacity 0.01s ease-out 0.01s;
   opacity: 0;
@@ -171,7 +162,7 @@ nav .menu-item:nth-of-type(4):hover ~ #sub-menu-container #sub-menu-holder {
   bottom: 0.5em;
   opacity: 1;
   transition: bottom 0.25s ease-out, opacity 0.01s ease-out 0.15s;
-}
+} */
 .menu-item:hover .sub-menu {
   opacity: 1;
   margin-left: 0;
@@ -246,6 +237,7 @@ nav .menu-item:nth-of-type(4):hover ~ #sub-menu-container #sub-menu-holder {
   background: linear-gradient(45deg, #0c86ef, #0cef9b);
   -webkit-text-fill-color: transparent;
   -webkit-background-clip: text;
+  background-clip: text;
   padding-left: 1px;
 }
 
@@ -361,29 +353,4 @@ nav
   #sub-menu-holder
   #sub-menu-bottom {
   opacity: 1;
-}
-
-#info-box {
-  position: absolute;
-  bottom: 2em;
-  right: 2em;
-}
-
-#info-box ul {
-  list-style: none;
-}
-#info-box a {
-  color: white;
-  text-decoration: none;
-  text-align: right;
-  padding: 0.5em 0;
-  transition: all 0.1s ease-out;
-  display: block;
-  text-transform: uppercase;
-  font-size: 1.25em;
-  font-weight: 900;
-  letter-spacing: 1px;
-}
-#info-box a:hover {
-  color: rgba(255, 255, 255, 0.5);
 }

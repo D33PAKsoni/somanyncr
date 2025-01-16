@@ -1,11 +1,222 @@
-import image1 from "../../assets/A-3.jpg";
-import image2 from "../../assets/A-44.jpg";
-import image3 from "../../assets/b4-2.jpg";
-import image4 from "../../assets/A-44.jpg";
-import image5 from "../../assets/b4-2.jpg";
+// import image1 from "../../assets/A-3.webp";
+// import image2 from "../../assets/A-44.webp";
+// import image3 from "../../assets/b4-2.webp";
+// import image4 from "../../assets/A-44.webp";
+// import image5 from "../../assets/b4-2.webp";
+
+// import React, { useState, useEffect, useRef } from "react";
+// import "./ExpandingGallery.css";
+
+// interface ImageData {
+//   src: string;
+//   alt: string;
+// }
+
+// interface GalleryDimensions {
+//   containerWidth: number;
+//   slitWidth: number;
+//   gap: number;
+// }
+
+// interface DragState {
+//   isDragging: boolean;
+//   startX: number;
+//   currentX: number;
+//   lastExpandedIndex: number;
+// }
+
+// const ExpandingGallery: React.FC = () => {
+//   const [expandedIndex, setExpandedIndex] = useState<number>(0);
+//   const [isAutoPlaying, setIsAutoPlaying] = useState<boolean>(true);
+//   const containerRef = useRef<HTMLDivElement | null>(null);
+//   const dragState = useRef<DragState>({
+//     isDragging: false,
+//     startX: 0,
+//     currentX: 0,
+//     lastExpandedIndex: 0,
+//   });
+
+//   const images: ImageData[] = [
+//     { src: image1, alt: "1" },
+//     { src: image2, alt: "2" },
+//     { src: image3, alt: "3" },
+//     { src: image4, alt: "4" },
+//     { src: image5, alt: "5" },
+//   ];
+
+//   const dimensions: GalleryDimensions = {
+//     containerWidth: 800,
+//     slitWidth: 24,
+//     gap: 8,
+//   };
+
+//   const calculateExpandedWidth = (): number => {
+//     const totalGaps = images.length - 1;
+//     const totalGapWidth = dimensions.gap * totalGaps;
+//     return (
+//       dimensions.containerWidth -
+//       dimensions.slitWidth * (images.length - 1) -
+//       totalGapWidth
+//     );
+//   };
+
+//   useEffect(() => {
+//     let intervalId: NodeJS.Timeout;
+
+//     if (isAutoPlaying) {
+//       intervalId = setInterval(() => {
+//         setExpandedIndex((prev) => (prev + 1) % images.length);
+//       }, 3000);
+//     }
+
+//     return () => {
+//       if (intervalId) clearInterval(intervalId);
+//     };
+//   }, [isAutoPlaying, images.length]);
+
+//   const handleSlitInteraction = (index: number): void => {
+//     if (!dragState.current.isDragging) {
+//       setIsAutoPlaying(false);
+//       setExpandedIndex(index);
+//     }
+//   };
+
+//   const handleMouseLeave = (): void => {
+//     if (!dragState.current.isDragging) {
+//       setTimeout(() => {
+//         setIsAutoPlaying(true);
+//       }, 500);
+//     }
+//   };
+
+//   const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
+//     setIsAutoPlaying(false);
+//     dragState.current = {
+//       isDragging: true,
+//       startX: "touches" in e ? e.touches[0].clientX : e.clientX,
+//       currentX: "touches" in e ? e.touches[0].clientX : e.clientX,
+//       lastExpandedIndex: expandedIndex,
+//     };
+//   };
+
+//   const handleDragMove = (e: React.MouseEvent | React.TouchEvent) => {
+//     if (!dragState.current.isDragging) return;
+
+//     const currentX = "touches" in e ? e.touches[0].clientX : e.clientX;
+//     dragState.current.currentX = currentX;
+
+//     const diff = dragState.current.startX - currentX;
+//     const threshold = dimensions.containerWidth / images.length / 2;
+
+//     if (Math.abs(diff) > threshold) {
+//       const direction = diff > 0 ? 1 : -1;
+//       const newIndex = Math.max(
+//         0,
+//         Math.min(
+//           images.length - 1,
+//           dragState.current.lastExpandedIndex + direction
+//         )
+//       );
+
+//       if (newIndex !== expandedIndex) {
+//         setExpandedIndex(newIndex);
+//         dragState.current.startX = currentX;
+//         dragState.current.lastExpandedIndex = newIndex;
+//       }
+//     }
+//   };
+
+//   const handleDragEnd = () => {
+//     dragState.current.isDragging = false;
+//     setTimeout(() => {
+//       if (!dragState.current.isDragging) {
+//         setIsAutoPlaying(true);
+//       }
+//     }, 1000);
+//   };
+
+//   return (
+//     <div className="gallery-container">
+//       <div
+//         ref={containerRef}
+//         className="gallery-wrapper"
+//         style={{ width: `${dimensions.containerWidth}px` }}
+//         onMouseLeave={handleMouseLeave}
+//         onMouseDown={handleDragStart}
+//         onMouseMove={handleDragMove}
+//         onMouseUp={handleDragEnd}
+//         // onMouseLeave={handleDragEnd}
+//         onTouchStart={handleDragStart}
+//         onTouchMove={handleDragMove}
+//         onTouchEnd={handleDragEnd}
+//       >
+//         {images.map((image, index) => (
+//           <div
+//             key={index}
+//             className={`gallery-slit ${
+//               dragState.current.isDragging ? "dragging" : ""
+//             }`}
+//             style={{
+//               width:
+//                 expandedIndex === index
+//                   ? `${calculateExpandedWidth()}px`
+//                   : `${dimensions.slitWidth}px`,
+//               opacity: expandedIndex === index ? 1 : 0.7,
+//             }}
+//             onClick={() => handleSlitInteraction(index)}
+//             onMouseEnter={() =>
+//               !dragState.current.isDragging && handleSlitInteraction(index)
+//             }
+//           >
+//             <div className="image-container">
+//               <div className="inner-shadow" />
+//               <img
+//                 src={image.src}
+//                 alt={image.alt}
+//                 className="gallery-image"
+//                 style={{
+//                   objectPosition:
+//                     expandedIndex === index
+//                       ? "center"
+//                       : `${-index * 100}px center`,
+//                 }}
+//               />
+//             </div>
+//           </div>
+//         ))}
+
+//         <div className="indicators-container">
+//           {images.map((_, index) => (
+//             <div
+//               key={index}
+//               className={`indicator ${expandedIndex === index ? "active" : ""}`}
+//               onClick={() => handleSlitInteraction(index)}
+//             />
+//           ))}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default ExpandingGallery;
+
+import image1 from "../../assets/A-3.webp";
+import image2 from "../../assets/A-44.webp";
+import image3 from "../../assets/b4-2.webp";
+import image4 from "../../assets/A-44.webp";
+import image5 from "../../assets/b4-2.webp";
+
+import React, { useState, useEffect, useRef, CSSProperties } from "react";
 import "./ExpandingGallery.css";
 
-// types.ts
+interface CustomCSSProperties extends CSSProperties {
+  "--expanded-width"?: string;
+  "--slit-width"?: string;
+  "--opacity"?: number;
+  "--object-position"?: string;
+}
+
 interface ImageData {
   src: string;
   alt: string;
@@ -17,13 +228,23 @@ interface GalleryDimensions {
   gap: number;
 }
 
-// ExpandingGallery.tsx
-import React, { useState, useEffect, useRef } from "react";
+interface DragState {
+  isDragging: boolean;
+  startX: number;
+  currentX: number;
+  lastExpandedIndex: number;
+}
 
 const ExpandingGallery: React.FC = () => {
   const [expandedIndex, setExpandedIndex] = useState<number>(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState<boolean>(true);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const dragState = useRef<DragState>({
+    isDragging: false,
+    startX: 0,
+    currentX: 0,
+    lastExpandedIndex: 0,
+  });
 
   const images: ImageData[] = [
     { src: image1, alt: "1" },
@@ -35,8 +256,8 @@ const ExpandingGallery: React.FC = () => {
 
   const dimensions: GalleryDimensions = {
     containerWidth: 800,
-    slitWidth: 40,
-    gap: 16,
+    slitWidth: 24,
+    gap: 8,
   };
 
   const calculateExpandedWidth = (): number => {
@@ -64,78 +285,117 @@ const ExpandingGallery: React.FC = () => {
   }, [isAutoPlaying, images.length]);
 
   const handleSlitInteraction = (index: number): void => {
-    setIsAutoPlaying(false);
-    setExpandedIndex(index);
+    if (!dragState.current.isDragging) {
+      setIsAutoPlaying(false);
+      setExpandedIndex(index);
+    }
   };
 
   const handleMouseLeave = (): void => {
-    setTimeout(() => {
-      setIsAutoPlaying(true);
-    }, 500);
+    if (!dragState.current.isDragging) {
+      setTimeout(() => {
+        setIsAutoPlaying(true);
+      }, 500);
+    }
   };
 
-  const getSlitStyles = (index: number): React.CSSProperties => ({
-    width:
-      expandedIndex === index
-        ? `${calculateExpandedWidth()}px`
-        : `${dimensions.slitWidth}px`,
-    flexShrink: 0,
-    opacity: expandedIndex === index ? 1 : 0.7,
-  });
+  const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
+    setIsAutoPlaying(false);
+    dragState.current = {
+      isDragging: true,
+      startX: "touches" in e ? e.touches[0].clientX : e.clientX,
+      currentX: "touches" in e ? e.touches[0].clientX : e.clientX,
+      lastExpandedIndex: expandedIndex,
+    };
+  };
 
-  const getImageStyles = (index: number): React.CSSProperties => ({
-    objectPosition:
-      expandedIndex === index ? "center" : `${-index * 100}px center`,
-  });
+  const handleDragMove = (e: React.MouseEvent | React.TouchEvent) => {
+    if (!dragState.current.isDragging) return;
 
-  const getInnerShadowStyles = (): React.CSSProperties => ({
-    boxShadow: "inset 0 0 20px rgba(0,0,0,0.3)",
-    borderRadius: "1rem",
-  });
+    const currentX = "touches" in e ? e.touches[0].clientX : e.clientX;
+    dragState.current.currentX = currentX;
+
+    const diff = dragState.current.startX - currentX;
+    const threshold = dimensions.containerWidth / images.length / 2;
+
+    if (Math.abs(diff) > threshold) {
+      const direction = diff > 0 ? 1 : -1;
+      const newIndex = Math.max(
+        0,
+        Math.min(
+          images.length - 1,
+          dragState.current.lastExpandedIndex + direction
+        )
+      );
+
+      if (newIndex !== expandedIndex) {
+        setExpandedIndex(newIndex);
+        dragState.current.startX = currentX;
+        dragState.current.lastExpandedIndex = newIndex;
+      }
+    }
+  };
+
+  const handleDragEnd = () => {
+    dragState.current.isDragging = false;
+    setTimeout(() => {
+      if (!dragState.current.isDragging) {
+        setIsAutoPlaying(true);
+      }
+    }, 1000);
+  };
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-4">
+    <div className="gallery-container">
       <div
         ref={containerRef}
-        className="flex gap-4 h-96"
-        style={{ width: `${dimensions.containerWidth}px` }}
+        className="gallery-wrapper"
         onMouseLeave={handleMouseLeave}
+        onMouseDown={handleDragStart}
+        onMouseMove={handleDragMove}
+        onMouseUp={handleDragEnd}
+        onTouchStart={handleDragStart}
+        onTouchMove={handleDragMove}
+        onTouchEnd={handleDragEnd}
       >
         {images.map((image, index) => (
           <div
             key={index}
-            className="relative h-full transition-all duration-500 ease-in-out cursor-pointer group"
-            style={getSlitStyles(index)}
-            onClick={() => handleSlitInteraction(index)}
-            onMouseEnter={() => handleSlitInteraction(index)}
-          >
-            <div className="w-full h-full overflow-hidden rounded-2xl shadow-lg relative">
-              <div
-                className="absolute inset-0 pointer-events-none"
-                style={getInnerShadowStyles()}
-              />
-
-              <img
-                src={image.src}
-                alt={image.alt}
-                className="w-full h-full object-cover"
-                style={getImageStyles(index)}
-              />
-
-              <div
-                className={`absolute bottom-4 ${
+            className={`gallery-slit ${
+              dragState.current.isDragging ? "dragging" : ""
+            }`}
+            data-expanded={expandedIndex === index}
+            style={
+              {
+                "--expanded-width": "calc((100% - (4 * 2%) - (4 * 10px)))",
+                "--slit-width": "2%",
+                "--object-position":
                   expandedIndex === index
-                    ? "left-4"
-                    : "left-1/2 -translate-x-1/2"
-                } w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md transition-all duration-500`}
-              >
-                <span className="text-sm font-semibold text-gray-800">
-                  {index + 1}
-                </span>
-              </div>
+                    ? "center"
+                    : `${-index * 100}px center`,
+              } as CustomCSSProperties
+            }
+            onClick={() => handleSlitInteraction(index)}
+            onMouseEnter={() =>
+              !dragState.current.isDragging && handleSlitInteraction(index)
+            }
+          >
+            <div className="image-container">
+              <div className="inner-shadow" />
+              <img src={image.src} alt={image.alt} className="gallery-image" />
             </div>
           </div>
         ))}
+
+        <div className="indicators-container">
+          {images.map((_, index) => (
+            <div
+              key={index}
+              className={`indicator ${expandedIndex === index ? "active" : ""}`}
+              onClick={() => handleSlitInteraction(index)}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
