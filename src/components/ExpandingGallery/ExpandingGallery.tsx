@@ -260,16 +260,6 @@ const ExpandingGallery: React.FC = () => {
     gap: 8,
   };
 
-  const calculateExpandedWidth = (): number => {
-    const totalGaps = images.length - 1;
-    const totalGapWidth = dimensions.gap * totalGaps;
-    return (
-      dimensions.containerWidth -
-      dimensions.slitWidth * (images.length - 1) -
-      totalGapWidth
-    );
-  };
-
   useEffect(() => {
     let intervalId: NodeJS.Timeout;
 
